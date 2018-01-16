@@ -70,7 +70,7 @@ DDOC =
         <meta name="theme-color" content="#FFFFFF">
 
         <!-- Google -->
-        <meta name="application-url" content="https://github.com/JonathanWilbur/asn1-d">
+        <meta name="application-url" content="$(GITHUB_REPO)">
         <meta name="audience" content="grownup">
         <meta itemprop="name" content="$(TITLE) - $(PROJECT_NAME)">
         <meta itemprop="description" content="$(PROJECT_DESCRIPTION)">
