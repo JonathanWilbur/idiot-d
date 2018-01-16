@@ -1,0 +1,10 @@
+{
+    "name": "idiot",
+    "description": "Informative terminal output as you iterate over a callback",
+    "copyright": "Copyright © 2017",
+    "authors": ["Jonathan M. Wilbur <jonathan@wilbur.space>"],
+    "license": "MIT",
+    "targetType": "library",
+    "sourcePaths": ["source"],
+    "importPaths": ["source"]
+}
