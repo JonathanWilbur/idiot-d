@@ -1,25 +1,43 @@
 @echo off
-mkdir .\documentation > nul
-mkdir .\documentation\html > nul
-mkdir .\build > nul
-mkdir .\build\executables > nul
-mkdir .\build\interfaces > nul
-mkdir .\build\libraries > nul
-mkdir .\build\objects > nul
+mkdir .\documentation > nul 2>&1
+mkdir .\documentation\html > nul 2>&1
+mkdir .\documentation\links > nul 2>&1
+mkdir .\build > nul 2>&1
+mkdir .\build\assemblies > nul 2>&1
+mkdir .\build\executables > nul 2>&1
+mkdir .\build\interfaces > nul 2>&1
+mkdir .\build\libraries > nul 2>&1
+mkdir .\build\logs > nul 2>&1
+mkdir .\build\maps > nul 2>&1
+mkdir .\build\objects > nul 2>&1
+mkdir .\build\scripts > nul 2>&1
 
+set version="0.9.0"
+
+echo|set /p="Building the Idiot Library (static)... "
 dmd ^
+.\source\macros.ddoc ^
 .\source\idiot.d ^
--Dd.\documentation\html\ ^
+-Dd.\documentation\html ^
 -Hd.\build\interfaces ^
 -op ^
--of.\build\libraries\idiot.lib ^
--Xf.\documentation\idiot.json ^
+-of..\libraries\idiot-%version%.lib ^
+-Xf.\documentation\idiot-%version%.json ^
 -lib ^
--cov ^
 -O ^
--profile ^
--release
+-inline ^
+-release ^
+-d
+echo Done.
 
-# Delete object files that get created.
-# Yes, I tried -o- already. It does not create the executable either.
-del .\build\executables\*.o
+echo|set /p="Building the Idiot Library (shared / dynamic)... "
+dmd ^
+.\source\idiot.d ^
+-of.\build\libraries\idiot-%version%.dll ^
+-lib ^
+-shared ^
+-O ^
+-inline ^
+-release ^
+-d
+echo Done.

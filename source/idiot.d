@@ -5,10 +5,12 @@
     This library assumes support for ANSI Escape Codes. If your terminal does
     not support ANSI Escape Codes, then tough luck.
 
-    Author: 
-        $(LINK2 http://jonathan.wilbur.space, Jonathan M. Wilbur) 
-            $(LINK2 mailto:jonathan@wilbur.space, jonathan@wilbur.space)
-    License: $(LINK2 https://mit-license.org/, MIT License)
+    Authors:
+    $(UL
+        $(LI $(PERSON Jonathan M. Wilbur, jonathan@wilbur.space, http://jonathan.wilbur.space))
+    )
+    Copyright: Copyright (C) Jonathan M. Wilbur
+    License: $(LINK https://mit-license.org/, MIT License)
     See_Also:
         $(LINK2 https://en.wikipedia.org/wiki/ANSI_escape_code, ANSI Escape Codes)
 */
@@ -48,7 +50,7 @@ enum IdiotIterationStatus : ubyte
 }
 
 ///
-public 
+public
 struct IdiotIteration(T)
 {
     IdiotIterationStatus status;
@@ -123,7 +125,7 @@ class Idiot(T)
             this.runs[$-1].iterations[$-1].status = IdiotIterationStatus.waiting;
             write
             (
-                "[ " ~ ANSI_CYAN ~ "WAITING" ~ ANSI_RESET ~ " ]", 
+                "[ " ~ ANSI_CYAN ~ "WAITING" ~ ANSI_RESET ~ " ]",
                 this.fraction(i+1, arguments.length),
                 this.percent(i+1, arguments.length),
                 this.marginalTime(),
@@ -133,14 +135,14 @@ class Idiot(T)
             );
 
             /* NOTE:
-                Standard Output (stdout) is buffered on Windows terminals, and 
+                Standard Output (stdout) is buffered on Windows terminals, and
                 flushed when a newline is encountered, so flush() is necessary
                 when you are trying to write less than a full line.
             */
-            version (Windows) stdout.flush(); 
-            
-            size_t millisecondsToPause = 
-                this.millisecondsToPauseInBetweenIterations + 
+            version (Windows) stdout.flush();
+
+            size_t millisecondsToPause =
+                this.millisecondsToPauseInBetweenIterations +
                 uniform(0u, this.maximumMillisecondsOfAdditionalRandomPause);
             Thread currentThread = Thread.getThis();
             currentThread.sleep(dur!("msecs")(millisecondsToPause));
@@ -149,7 +151,7 @@ class Idiot(T)
             write
             (
                 ANSI_DELETE_LINE,
-                "[ " ~ ANSI_YELLOW ~ "WORKING" ~ ANSI_RESET ~ " ]", 
+                "[ " ~ ANSI_YELLOW ~ "WORKING" ~ ANSI_RESET ~ " ]",
                 this.fraction(i+1, arguments.length),
                 this.percent(i+1, arguments.length),
                 this.marginalTime(),
@@ -159,11 +161,11 @@ class Idiot(T)
             );
 
             /* NOTE:
-                Standard Output (stdout) is buffered on Windows terminals, and 
+                Standard Output (stdout) is buffered on Windows terminals, and
                 flushed when a newline is encountered, so flush() is necessary
                 when you are trying to write less than a full line.
             */
-            version (Windows) stdout.flush(); 
+            version (Windows) stdout.flush();
 
             bool result;
             try
@@ -180,7 +182,7 @@ class Idiot(T)
                     writeln
                     (
                         ANSI_DELETE_LINE,
-                        "[ " ~ ANSI_ERROR ~ "ERRORED" ~ ANSI_RESET ~ " ]", 
+                        "[ " ~ ANSI_ERROR ~ "ERRORED" ~ ANSI_RESET ~ " ]",
                         this.fraction(i+1, arguments.length),
                         this.percent(i+1, arguments.length),
                         this.marginalTime(),
@@ -206,7 +208,7 @@ class Idiot(T)
                 writeln
                 (
                     ANSI_DELETE_LINE,
-                    "[ " ~ ANSI_GREEN ~ "SUCCESS" ~ ANSI_RESET ~ " ]", 
+                    "[ " ~ ANSI_GREEN ~ "SUCCESS" ~ ANSI_RESET ~ " ]",
                     this.fraction(i+1, arguments.length),
                     this.percent(i+1, arguments.length),
                     this.marginalTime(this.runs[$-1].iterations[$-1].duration),
@@ -224,7 +226,7 @@ class Idiot(T)
                 writeln
                 (
                     ANSI_DELETE_LINE,
-                    "[ " ~ ANSI_RED ~ "FAILURE" ~ ANSI_RESET ~ " ]", 
+                    "[ " ~ ANSI_RED ~ "FAILURE" ~ ANSI_RESET ~ " ]",
                     this.fraction(i+1, arguments.length),
                     this.percent(i+1, arguments.length),
                     this.marginalTime(this.runs[$-1].iterations[$-1].duration),
@@ -273,12 +275,12 @@ class Idiot(T)
     {
         if (!this.showMarginalTime) return "";
 
-        bool fasterThanLastIteration = 
+        bool fasterThanLastIteration =
         (
-            (this.runs[$-1].iterations.length >= 2u) && 
+            (this.runs[$-1].iterations.length >= 2u) &&
             (duration > this.runs[$-1].iterations[$-2].duration)
         ) ? true : false;
-        
+
         ubyte hours;
         ubyte minutes;
         ubyte seconds;

@@ -1,0 +1,638 @@
+[
+ {
+  "name" : "idiot",
+  "kind" : "module",
+  "file" : "./source/idiot.d",
+  "comment" : "    A library for creating pleasant command-line output for repetitive tasks,\n    where a callback must iterate over an array of arguments.\n\n    This library assumes support for ANSI Escape Codes. If your terminal does\n    not support ANSI Escape Codes, then tough luck.\n\n    Authors:\n    $(UL\n        $(LI $(PERSON Jonathan M. Wilbur, jonathan@wilbur.space, http://jonathan.wilbur.space))\n    )\n    Copyright: Copyright (C) Jonathan M. Wilbur\n    License: $(LINK https://mit-license.org/, MIT License)\n    See_Also:\n        $(LINK2 https://en.wikipedia.org/wiki/ANSI_escape_code, ANSI Escape Codes)\n",
+  "members" : [
+   {
+    "name" : "core.thread",
+    "kind" : "import",
+    "line" : 18,
+    "char" : 8,
+    "protection" : "private",
+    "selective" : [
+     "Thread"
+    ]
+   },
+   {
+    "name" : "core.time",
+    "kind" : "import",
+    "line" : 19,
+    "char" : 8,
+    "protection" : "private",
+    "selective" : [
+     "dur",
+     "Duration"
+    ]
+   },
+   {
+    "name" : "std.array",
+    "kind" : "import",
+    "line" : 20,
+    "char" : 8,
+    "protection" : "private",
+    "selective" : [
+     "appender",
+     "Appender",
+     "replace"
+    ]
+   },
+   {
+    "name" : "std.conv",
+    "kind" : "import",
+    "line" : 21,
+    "char" : 8,
+    "protection" : "private",
+    "selective" : [
+     "text"
+    ]
+   },
+   {
+    "name" : "std.datetime.date",
+    "kind" : "import",
+    "line" : 22,
+    "char" : 8,
+    "protection" : "private",
+    "selective" : [
+     "DateTime"
+    ]
+   },
+   {
+    "name" : "std.datetime.stopwatch",
+    "kind" : "import",
+    "line" : 23,
+    "char" : 8,
+    "protection" : "private",
+    "selective" : [
+     "AutoStart",
+     "StopWatch"
+    ]
+   },
+   {
+    "name" : "std.datetime.systime",
+    "kind" : "import",
+    "line" : 24,
+    "char" : 8,
+    "protection" : "private",
+    "selective" : [
+     "Clock",
+     "SysTime"
+    ]
+   },
+   {
+    "name" : "std.format",
+    "kind" : "import",
+    "line" : 25,
+    "char" : 8,
+    "protection" : "private",
+    "selective" : [
+     "formattedWrite"
+    ]
+   },
+   {
+    "name" : "std.random",
+    "kind" : "import",
+    "line" : 26,
+    "char" : 8,
+    "protection" : "private",
+    "selective" : [
+     "uniform"
+    ]
+   },
+   {
+    "name" : "std.stdio",
+    "kind" : "import",
+    "line" : 27,
+    "char" : 8,
+    "protection" : "private",
+    "selective" : [
+     "stdout",
+     "write",
+     "writeln",
+     "writefln"
+    ]
+   },
+   {
+    "name" : "ANSI_BLUE",
+    "kind" : "variable",
+    "line" : 29,
+    "char" : 18,
+    "storageClass" : [
+     "immutable"
+    ],
+    "deco" : "yAa",
+    "originalType" : "string",
+    "init" : "\"\\x1b[34;40m\""
+   },
+   {
+    "name" : "ANSI_CYAN",
+    "kind" : "variable",
+    "line" : 30,
+    "char" : 18,
+    "storageClass" : [
+     "immutable"
+    ],
+    "deco" : "yAa",
+    "originalType" : "string",
+    "init" : "\"\\x1b[36;40m\""
+   },
+   {
+    "name" : "ANSI_GREEN",
+    "kind" : "variable",
+    "line" : 31,
+    "char" : 18,
+    "storageClass" : [
+     "immutable"
+    ],
+    "deco" : "yAa",
+    "originalType" : "string",
+    "init" : "\"\\x1b[32;40m\""
+   },
+   {
+    "name" : "ANSI_YELLOW",
+    "kind" : "variable",
+    "line" : 32,
+    "char" : 18,
+    "storageClass" : [
+     "immutable"
+    ],
+    "deco" : "yAa",
+    "originalType" : "string",
+    "init" : "\"\\x1b[33;40m\""
+   },
+   {
+    "name" : "ANSI_RED",
+    "kind" : "variable",
+    "line" : 33,
+    "char" : 18,
+    "storageClass" : [
+     "immutable"
+    ],
+    "deco" : "yAa",
+    "originalType" : "string",
+    "init" : "\"\\x1b[31;40m\""
+   },
+   {
+    "name" : "ANSI_ERROR",
+    "kind" : "variable",
+    "line" : 34,
+    "char" : 18,
+    "storageClass" : [
+     "immutable"
+    ],
+    "deco" : "yAa",
+    "originalType" : "string",
+    "init" : "\"\\x1b[33;41m\""
+   },
+   {
+    "name" : "ANSI_RESET",
+    "kind" : "variable",
+    "line" : 35,
+    "char" : 18,
+    "storageClass" : [
+     "immutable"
+    ],
+    "deco" : "yAa",
+    "originalType" : "string",
+    "init" : "\"\\x1b[0m\""
+   },
+   {
+    "name" : "ANSI_DELETE_LINE",
+    "kind" : "variable",
+    "line" : 36,
+    "char" : 18,
+    "storageClass" : [
+     "immutable"
+    ],
+    "deco" : "yAa",
+    "originalType" : "string",
+    "init" : "\"\\x1b[2K\\x0d\""
+   },
+   {
+    "name" : "IdiotIterationStatus",
+    "kind" : "enum",
+    "comment" : "\n",
+    "line" : 42,
+    "char" : 1,
+    "baseDeco" : "h",
+    "members" : [
+     {
+      "name" : "notStarted",
+      "kind" : "enum member",
+      "value" : "cast(ubyte)0u",
+      "line" : 44,
+      "char" : 5
+     },
+     {
+      "name" : "waiting",
+      "kind" : "enum member",
+      "value" : "1",
+      "line" : 45,
+      "char" : 5
+     },
+     {
+      "name" : "working",
+      "kind" : "enum member",
+      "value" : "2",
+      "line" : 46,
+      "char" : 5
+     },
+     {
+      "name" : "success",
+      "kind" : "enum member",
+      "value" : "3",
+      "line" : 47,
+      "char" : 5
+     },
+     {
+      "name" : "failure",
+      "kind" : "enum member",
+      "value" : "4",
+      "line" : 48,
+      "char" : 5
+     },
+     {
+      "name" : "errored",
+      "kind" : "enum member",
+      "value" : "5",
+      "line" : 49,
+      "char" : 5
+     }
+    ]
+   },
+   {
+    "kind" : "template",
+    "comment" : "\n",
+    "line" : 54,
+    "char" : 1,
+    "name" : "IdiotIteration",
+    "parameters" : [
+     {
+      "name" : "T",
+      "kind" : "type"
+     }
+    ],
+    "members" : [
+     {
+      "name" : "IdiotIteration",
+      "kind" : "struct",
+      "line" : 54,
+      "char" : 1,
+      "members" : [
+       {
+        "name" : "status",
+        "kind" : "variable",
+        "line" : 56,
+        "char" : 26,
+        "type" : "IdiotIterationStatus"
+       },
+       {
+        "name" : "startTime",
+        "kind" : "variable",
+        "line" : 57,
+        "char" : 13,
+        "type" : "SysTime"
+       },
+       {
+        "name" : "endTime",
+        "kind" : "variable",
+        "line" : 58,
+        "char" : 13,
+        "type" : "SysTime"
+       },
+       {
+        "name" : "duration",
+        "kind" : "variable",
+        "line" : 59,
+        "char" : 14,
+        "type" : "Duration"
+       },
+       {
+        "name" : "argument",
+        "kind" : "variable",
+        "line" : 60,
+        "char" : 7,
+        "type" : "T"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "kind" : "template",
+    "comment" : "\n",
+    "line" : 65,
+    "char" : 1,
+    "name" : "IdiotRun",
+    "parameters" : [
+     {
+      "name" : "T",
+      "kind" : "type"
+     }
+    ],
+    "members" : [
+     {
+      "name" : "IdiotRun",
+      "kind" : "struct",
+      "line" : 65,
+      "char" : 1,
+      "members" : [
+       {
+        "name" : "startTime",
+        "kind" : "variable",
+        "line" : 67,
+        "char" : 13,
+        "type" : "SysTime"
+       },
+       {
+        "name" : "endTime",
+        "kind" : "variable",
+        "line" : 68,
+        "char" : 13,
+        "type" : "SysTime"
+       },
+       {
+        "name" : "duration",
+        "kind" : "variable",
+        "line" : 69,
+        "char" : 14,
+        "type" : "Duration"
+       },
+       {
+        "name" : "success",
+        "kind" : "variable",
+        "line" : 70,
+        "char" : 12,
+        "type" : "size_t"
+       },
+       {
+        "name" : "failure",
+        "kind" : "variable",
+        "line" : 71,
+        "char" : 12,
+        "type" : "size_t"
+       },
+       {
+        "name" : "errored",
+        "kind" : "variable",
+        "line" : 72,
+        "char" : 12,
+        "type" : "size_t"
+       },
+       {
+        "name" : "iterations",
+        "kind" : "variable",
+        "line" : 73,
+        "char" : 26,
+        "type" : "IdiotIteration!T[]"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "kind" : "template",
+    "comment" : "\n",
+    "line" : 78,
+    "char" : 1,
+    "name" : "Idiot",
+    "parameters" : [
+     {
+      "name" : "T",
+      "kind" : "type"
+     }
+    ],
+    "members" : [
+     {
+      "name" : "Idiot",
+      "kind" : "class",
+      "line" : 78,
+      "char" : 1,
+      "members" : [
+       {
+        "name" : "showFraction",
+        "kind" : "variable",
+        "line" : 81,
+        "char" : 17,
+        "deco" : "b",
+        "init" : "true"
+       },
+       {
+        "name" : "showPercent",
+        "kind" : "variable",
+        "line" : 82,
+        "char" : 17,
+        "deco" : "b",
+        "init" : "true"
+       },
+       {
+        "name" : "showMarginalTime",
+        "kind" : "variable",
+        "line" : 83,
+        "char" : 17,
+        "deco" : "b",
+        "init" : "true"
+       },
+       {
+        "name" : "showCumulativeTime",
+        "kind" : "variable",
+        "line" : 84,
+        "char" : 17,
+        "deco" : "b",
+        "init" : "true"
+       },
+       {
+        "name" : "continueOnSuccess",
+        "kind" : "variable",
+        "line" : 87,
+        "char" : 17,
+        "deco" : "b",
+        "init" : "true"
+       },
+       {
+        "name" : "continueOnFailure",
+        "kind" : "variable",
+        "line" : 88,
+        "char" : 17,
+        "deco" : "b",
+        "init" : "true"
+       },
+       {
+        "name" : "continueOnException",
+        "kind" : "variable",
+        "line" : 89,
+        "char" : 17,
+        "deco" : "b",
+        "init" : "true"
+       },
+       {
+        "name" : "callback",
+        "kind" : "variable",
+        "line" : 90,
+        "char" : 40,
+        "type" : "bool delegate(size_t, T[])"
+       },
+       {
+        "name" : "millisecondsToPauseInBetweenIterations",
+        "kind" : "variable",
+        "line" : 91,
+        "char" : 19,
+        "type" : "size_t",
+        "init" : "0u"
+       },
+       {
+        "name" : "maximumMillisecondsOfAdditionalRandomPause",
+        "kind" : "variable",
+        "line" : 92,
+        "char" : 19,
+        "type" : "size_t",
+        "init" : "0u"
+       },
+       {
+        "name" : "runs",
+        "kind" : "variable",
+        "line" : 95,
+        "char" : 20,
+        "type" : "IdiotRun!T[]"
+       },
+       {
+        "name" : "this",
+        "kind" : "constructor",
+        "comment" : "Constructor that accepts a delegate\n",
+        "line" : 99,
+        "char" : 5,
+        "type" : "nothrow @safe (in bool delegate(size_t, T[]) callback)",
+        "parameters" : [
+         {
+          "name" : "callback",
+          "type" : "bool delegate(size_t, T[])",
+          "storageClass" : [
+           "in"
+          ]
+         }
+        ],
+        "endline" : 102,
+        "endchar" : 5
+       },
+       {
+        "name" : "this",
+        "kind" : "constructor",
+        "comment" : "Constructor that accepts a function\n",
+        "line" : 106,
+        "char" : 5,
+        "type" : "nothrow @system (in bool function(size_t, T[]) callback)",
+        "parameters" : [
+         {
+          "name" : "callback",
+          "type" : "bool function(size_t, T[])",
+          "storageClass" : [
+           "in"
+          ]
+         }
+        ],
+        "endline" : 110,
+        "endchar" : 5
+       },
+       {
+        "name" : "execute",
+        "kind" : "function",
+        "comment" : "Executes the callback over all elements in the supplied $(D arguments) array.\n",
+        "line" : 114,
+        "char" : 10,
+        "type" : "void(T[] arguments)",
+        "parameters" : [
+         {
+          "name" : "arguments",
+          "type" : "T[]"
+         }
+        ],
+        "endline" : 247,
+        "endchar" : 5
+       },
+       {
+        "name" : "fraction",
+        "kind" : "function",
+        "line" : 250,
+        "char" : 12,
+        "type" : "string(size_t numerator, size_t denominator)",
+        "parameters" : [
+         {
+          "name" : "numerator",
+          "type" : "size_t"
+         },
+         {
+          "name" : "denominator",
+          "type" : "size_t"
+         }
+        ],
+        "endline" : 260,
+        "endchar" : 5
+       },
+       {
+        "name" : "percent",
+        "kind" : "function",
+        "line" : 263,
+        "char" : 12,
+        "type" : "string(size_t numerator, size_t denominator)",
+        "parameters" : [
+         {
+          "name" : "numerator",
+          "type" : "size_t"
+         },
+         {
+          "name" : "denominator",
+          "type" : "size_t"
+         }
+        ],
+        "endline" : 271,
+        "endchar" : 5
+       },
+       {
+        "name" : "marginalTime",
+        "kind" : "function",
+        "line" : 274,
+        "char" : 12,
+        "type" : "string(Duration duration = Duration())",
+        "parameters" : [
+         {
+          "name" : "duration",
+          "type" : "Duration",
+          "default" : "Duration()"
+         }
+        ],
+        "endline" : 294,
+        "endchar" : 5
+       },
+       {
+        "name" : "cumulativeTime",
+        "kind" : "function",
+        "line" : 297,
+        "char" : 12,
+        "type" : "string(Duration duration = Duration())",
+        "parameters" : [
+         {
+          "name" : "duration",
+          "type" : "Duration",
+          "default" : "Duration()"
+         }
+        ],
+        "endline" : 309,
+        "endchar" : 5
+       },
+       {
+        "name" : "writeEndOfRunReport",
+        "kind" : "function",
+        "line" : 312,
+        "char" : 10,
+        "type" : "void()",
+        "endline" : 345,
+        "endchar" : 5
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+]

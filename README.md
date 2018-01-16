@@ -1,12 +1,12 @@
 # Idiot Library
 
 * Author: [Jonathan M. Wilbur](http://jonathan.wilbur.space) <[jonathan@wilbur.space](mailto:jonathan@wilbur.space)>
-* Copyright Year: 2017
+* Copyright Year: 2018
 * License: [MIT License](https://mit-license.org/)
 * Version: [0.9.0](http://semver.org/)
 
 Have a task where you need to iterate a callback over an array of arguments?
-Use Idiot! Idiot unintrusively inserts into your code to produce beautiful 
+Use Idiot! Idiot unintrusively inserts into your code to produce beautiful
 command-line output.
 
 ## Compile and Install
@@ -23,7 +23,7 @@ using the `chmod` command.
 ### On Windows
 
 Run `.\build\scripts\build.bat` from a `cmd` or run `.\build\scripts\build.ps1`
-from the PowerShell command line. If you get a warning about needing a 
+from the PowerShell command line. If you get a warning about needing a
 cryptographic signature for the PowerShell script, it is probably because
 your system is blocking running unsigned PowerShell scripts. Just run the
 other script if that is the case.
@@ -85,6 +85,10 @@ class Idiot(T)
 }
 
 ```
+
+## Future Developments
+
+I would like to make a command-line tools like `xargs` with this library.
 
 ## Contact Me
 
