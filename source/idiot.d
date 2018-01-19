@@ -26,11 +26,11 @@ import std.format : formattedWrite;
 import std.random : uniform;
 import std.stdio : stdout, write, writeln, writefln;
 
-immutable string ANSI_BLUE = "\x1B[34;40m";
-immutable string ANSI_CYAN = "\x1B[36;40m";
-immutable string ANSI_GREEN = "\x1B[32;40m";
-immutable string ANSI_YELLOW = "\x1B[33;40m";
-immutable string ANSI_RED = "\x1B[31;40m";
+immutable string ANSI_BLUE = "\x1B[34m";
+immutable string ANSI_CYAN = "\x1B[36m";
+immutable string ANSI_GREEN = "\x1B[32m";
+immutable string ANSI_YELLOW = "\x1B[33m";
+immutable string ANSI_RED = "\x1B[31m";
 immutable string ANSI_ERROR = "\x1B[33;41m";
 immutable string ANSI_RESET = "\x1B[0m";
 immutable string ANSI_DELETE_LINE = "\x1B[2K\r";
@@ -139,7 +139,7 @@ class Idiot(T)
                 flushed when a newline is encountered, so flush() is necessary
                 when you are trying to write less than a full line.
             */
-            version (Windows) stdout.flush();
+            version (Windows) stdout.flush(); // REVIEW: I believe this needs to change on Linux too...
 
             size_t millisecondsToPause =
                 this.millisecondsToPauseInBetweenIterations +
@@ -165,7 +165,7 @@ class Idiot(T)
                 flushed when a newline is encountered, so flush() is necessary
                 when you are trying to write less than a full line.
             */
-            version (Windows) stdout.flush();
+            version (Windows) stdout.flush(); // REVIEW: I believe this needs to change on Linux too...
 
             bool result;
             try

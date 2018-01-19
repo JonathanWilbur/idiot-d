@@ -3,7 +3,7 @@
 * Author: [Jonathan M. Wilbur](http://jonathan.wilbur.space) <[jonathan@wilbur.space](mailto:jonathan@wilbur.space)>
 * Copyright Year: 2018
 * License: [MIT License](https://mit-license.org/)
-* Version: [0.9.1](http://semver.org/)
+* Version: [0.9.2](http://semver.org/)
 
 Have a task where you need to iterate a callback over an array of arguments?
 Use Idiot! Idiot unintrusively inserts into your code to produce beautiful
@@ -78,7 +78,7 @@ class Idiot(T)
     public bool continueOnException = true;
     public bool delegate (size_t, T[]) callback;
     public size_t millisecondsToPauseInBetweenIterations = 0u;
-    public size_t millisecondsOfAdditionalRandomPause = 1000u;
+    public size_t maximumMillisecondsOfAdditionalRandomPause = 0u;
 
     // ...
 
